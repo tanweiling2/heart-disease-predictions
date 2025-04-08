@@ -1,0 +1,81 @@
+4.2 Decision Tree, Random Forests, Gradient Boosting & XG Boost
+As the class
+_
+weight parameter was not available for Gradient Boosting classifier, sample
+_
+weights
+were also calculated based on the class
+_
+weight parameter. This was similarly done for XGBoost and
+scale
+_pos
+_
+weights (Feki, 2022).
+We tuned hyperparameters for the Decision Tree model using GridSearchCV to find optimal
+parameters. For more complex models like Random Forest, Gradient Boosting and XGBoost, we
+employed RandomSearchCV to reduce training time while maintaining model performance.
+Overfitting was monitored by comparing scoring metrics across training and test sets.
+4.2.1 Decision Trees
+Decision Tree Models were considered as it was reasonably easy to interpret even without domain
+knowledge, and also allowed us to find what are variables are the most significant in predicting stroke,
+which would also allow us to make suitable recommendations to users accordingly: “Reduce smoking,
+exercise to reduce bmi, Reduce high blood pressure”
+.
+4.2.2 Random Forest
+As found from the results of Lasso Logistic Regression, not all of the variables were able to tend to 0,
+indicating complex relationships between the feature variables. Thus, forms of ensemble learning,
+such as Random Forest, would be suitable in analysing the non-linear relationships. In addition,
+Random Forest is more robust to overfitting compared to Decision Tree, which helps to improve the
+model’s out of training performance. However, this is achieved at the cost of interpretability compared
+to Decision Trees.
+4.2.3 Gradient Boosting
+Gradient Boosting is also found to perform better for imbalanced datasets since it tries to fit new
+predictors to the errors made by the precious predictor. This iterative improvement enhances
+sensitivity to the minority class (stroke cases), resulting in a model better equipped for detecting
+stroke. The adaptive learning rate and capacity for capturing complex relationships make Gradient
+Boosting a strong choice for handling imbalanced datasets such as our stroke dataset.
+4.2.4 XGBoost
+XGBoost, which is an improved and more regularised version of Gradient Boosting models, allows
+for faster training times and improved accuracy, which would be useful when bigger datasets are used
+to train the model in the future. XGBoost uses both L1 (Lasso) and L2 (Ridge) regularisation, helping
+to reduce overfitting with more robust models, especially in datasets with many features (Khandelwal,
+2020).
+
+
+  
+5. Results
+To evaluate the results of our models, we prioritised 2 main metrics: Recall and AUC. Recall was
+chosen as it emphasises the importance of minimising false negatives, which is particularly crucial for
+stroke prediction. This metric is regarded as being among the most important for medical studies,
+since it is desired to miss as few positive instances as possible (Hicks et al, 2022). AUC was chosen as
+a supplementary metric for its effectiveness in evaluating model performance on imbalanced datasets,
+providing a comprehensive measure of a model’s ability to distinguish between positive and negative
+cases. In healthcare analytics, an AUC above 0.8 is typically considered the benchmark for reliable
+models (Mandrekar, 2010). However, due to the limitations within our dataset, we set a more
+achievable cutoff, retaining models with an AUC of 0.75 or higher.
+
+
+  5.2 Results of the Decision Tree, Random Forest, Gradient Boosting & XGBoost
+For our business problem, which is to accurately predict cases of stroke, the main metric of evaluating
+the tree-based models-scoring metrics will be having a high recall and an AUC score > 0.75, after
+checking for no overfitting. We checked for overfitting by also comparing the train-test performance
+for each respective scoring metric used and also generating a confusion matrix.
+Although different model-scoring metric combinations achieved higher recall scores than the above
+selected combinations (Appendix C, Figure 5), they were rejected due to overfitting, and having poor
+performance for the negative cases of stroke, which makes it no different from a random guess.
+Based on this, the best models from each type of model and scoring metric were found to be:
+1. Decision tree with ‘f1-score’ scoring metric;
+2. Random Forest with ‘roc-auc’ scoring metric;
+3. Gradient Boosting with ‘roc-auc’ scoring metric; and
+4. XGBoost with ‘recall’ scoring metric.
+
+[for compiled data on models' performance, please refer to the EXCEL file]
+ 
+Random Forest with the ‘roc-auc’ scoring metric had the best performance out of the tree based
+models due to its highest recall score for outcome = 1 (0.85). Despite having the lowest
+precision score and accuracy out of the 4 models, the model still holds high predictive power as seen
+from its AUC score of 0.832 (Figure 5).
+During our analysis, we found the usage of the ‘neg_log_loss’ scoring metric to consistently
+underperformed for all tree based models and result in overfitting (Appendix C Figure 1). 
+ 
+From this we determined that the usage of ‘neg_log_loss’ was not suitable for imbalanced datasets.
